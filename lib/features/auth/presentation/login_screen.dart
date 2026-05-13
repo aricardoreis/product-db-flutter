@@ -58,11 +58,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     keyboardType: TextInputType.emailAddress,
                     autofillHints: const [AutofillHints.email],
                     decoration: const InputDecoration(
-                      labelText: 'E-mail',
+                      labelText: 'Email',
                       border: OutlineInputBorder(),
                     ),
                     validator: (v) => (v == null || !v.contains('@'))
-                        ? 'E-mail inválido'
+                        ? 'Invalid email'
                         : null,
                   ),
                   const SizedBox(height: 16),
@@ -71,7 +71,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     obscureText: _obscure,
                     autofillHints: const [AutofillHints.password],
                     decoration: InputDecoration(
-                      labelText: 'Senha',
+                      labelText: 'Password',
                       border: const OutlineInputBorder(),
                       suffixIcon: IconButton(
                         icon: Icon(
@@ -82,7 +82,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                     ),
                     validator: (v) =>
-                        (v == null || v.isEmpty) ? 'Informe a senha' : null,
+                        (v == null || v.isEmpty) ? 'Password required' : null,
                   ),
                   if (errorMessage != null) ...[
                     const SizedBox(height: 16),
@@ -102,12 +102,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             width: 20,
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
-                        : const Text('Entrar'),
+                        : const Text('Sign in'),
                   ),
                   const SizedBox(height: 8),
                   const TextButton(
                     onPressed: null,
-                    child: Text('Esqueci minha senha'),
+                    child: Text('Forgot password'),
                   ),
                 ],
               ),
@@ -119,6 +119,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   String _formatError(Object? error) {
-    return 'Não foi possível entrar. Verifique e-mail e senha.';
+    return 'Could not sign in. Check your email and password.';
   }
 }
