@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:product_db_flutter/core/http/dio_client.dart';
 import 'package:product_db_flutter/features/sales/domain/sale.dart';
+import 'package:product_db_flutter/features/sales/domain/sale_details.dart';
 
 class SalesPage {
   const SalesPage({required this.items, required this.total});
@@ -35,6 +36,15 @@ class SalesApi {
       items: result,
       total: (body['total'] as num? ?? 0).toInt(),
     );
+  }
+
+  Future<SaleDetails> byId(String id) async {
+    final res = await _dio.get<Map<String, dynamic>>('/sales/$id');
+    final result = res.data?['result'] as Map<String, dynamic>?;
+    if (result == null) {
+      throw const FormatException('Empty sale response');
+    }
+    return SaleDetails.fromJson(result);
   }
 }
 

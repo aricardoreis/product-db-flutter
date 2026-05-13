@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:product_db_flutter/core/http/dio_client.dart';
 import 'package:product_db_flutter/features/products/domain/product.dart';
+import 'package:product_db_flutter/features/products/domain/product_details.dart';
 
 class ProductsPage {
   const ProductsPage({required this.items, required this.total});
@@ -41,6 +42,15 @@ class ProductsApi {
       items: items,
       total: (body['total'] as num? ?? 0).toInt(),
     );
+  }
+
+  Future<ProductDetails> byId(int id) async {
+    final res = await _dio.get<Map<String, dynamic>>('/products/$id');
+    final result = res.data?['result'] as Map<String, dynamic>?;
+    if (result == null) {
+      throw const FormatException('Empty product response');
+    }
+    return ProductDetails.fromJson(result);
   }
 }
 

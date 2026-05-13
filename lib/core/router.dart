@@ -5,7 +5,9 @@ import 'package:product_db_flutter/core/shell/app_shell.dart';
 import 'package:product_db_flutter/features/auth/presentation/auth_controller.dart';
 import 'package:product_db_flutter/features/auth/presentation/login_screen.dart';
 import 'package:product_db_flutter/features/auth/presentation/splash_screen.dart';
+import 'package:product_db_flutter/features/products/presentation/product_detail_screen.dart';
 import 'package:product_db_flutter/features/products/presentation/products_list_screen.dart';
+import 'package:product_db_flutter/features/sales/presentation/sale_detail_screen.dart';
 import 'package:product_db_flutter/features/sales/presentation/sales_list_screen.dart';
 import 'package:product_db_flutter/features/scanner/presentation/processing_screen.dart';
 import 'package:product_db_flutter/features/scanner/presentation/scanner_screen.dart';
@@ -54,6 +56,14 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: '/sales',
                 builder: (_, _) => const SalesListScreen(),
+                routes: [
+                  GoRoute(
+                    path: ':id',
+                    builder: (_, state) => SaleDetailScreen(
+                      id: state.pathParameters['id'] ?? '',
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -62,6 +72,14 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: '/products',
                 builder: (_, _) => const ProductsListScreen(),
+                routes: [
+                  GoRoute(
+                    path: ':id',
+                    builder: (_, state) => ProductDetailScreen(
+                      id: int.parse(state.pathParameters['id'] ?? '0'),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
