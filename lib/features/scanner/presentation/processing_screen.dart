@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:product_db_flutter/core/http/dio_client.dart';
+import 'package:product_db_flutter/features/sales/data/sales_api.dart';
 
 class ProcessingScreen extends ConsumerStatefulWidget {
   const ProcessingScreen({required this.url, super.key});
@@ -39,15 +39,9 @@ class _ProcessingScreenState extends ConsumerState<ProcessingScreen> {
     final stopwatch = Stopwatch()..start();
     debugPrint('[processing] POST /sales url=${widget.url}');
     try {
-      await ref.read(dioProvider).post<dynamic>(
-            '/sales',
-            data: {'url': widget.url},
-            cancelToken: token,
-            options: Options(
-              sendTimeout: const Duration(seconds: 30),
-              receiveTimeout: const Duration(seconds: 30),
-            ),
-          );
+      await ref
+          .read(salesApiProvider)
+          .create(url: widget.url, cancelToken: token);
       debugPrint('[processing] success in ${stopwatch.elapsedMilliseconds}ms');
       if (!mounted) return;
       setState(() => _done = true);

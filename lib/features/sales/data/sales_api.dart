@@ -46,6 +46,21 @@ class SalesApi {
     }
     return SaleDetails.fromJson(result);
   }
+
+  Future<void> create({
+    required String url,
+    CancelToken? cancelToken,
+  }) async {
+    await _dio.post<dynamic>(
+      '/sales',
+      data: {'url': url},
+      cancelToken: cancelToken,
+      options: Options(
+        sendTimeout: const Duration(seconds: 30),
+        receiveTimeout: const Duration(seconds: 30),
+      ),
+    );
+  }
 }
 
 final salesApiProvider = Provider<SalesApi>((ref) {
