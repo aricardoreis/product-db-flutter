@@ -36,12 +36,19 @@ class _ProcessingScreenState extends ConsumerState<ProcessingScreen> {
       _done = false;
     });
     final token = _cancelToken = CancelToken();
+    final stopwatch = Stopwatch()..start();
+    debugPrint('[processing] POST /sales url=${widget.url}');
     try {
       await ref.read(dioProvider).post<dynamic>(
             '/sales',
             data: {'url': widget.url},
             cancelToken: token,
+            options: Options(
+              sendTimeout: const Duration(seconds: 30),
+              receiveTimeout: const Duration(seconds: 30),
+            ),
           );
+      debugPrint('[processing] success in ${stopwatch.elapsedMilliseconds}ms');
       if (!mounted) return;
       setState(() => _done = true);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -49,10 +56,17 @@ class _ProcessingScreenState extends ConsumerState<ProcessingScreen> {
       );
       context.go('/sales');
     } on DioException catch (e) {
+      debugPrint(
+        '[processing] DioException after ${stopwatch.elapsedMilliseconds}ms '
+        'type=${e.type} status=${e.response?.statusCode} message=${e.message}',
+      );
       if (CancelToken.isCancel(e)) return;
       if (!mounted) return;
       setState(() => _error = _humanize(e));
     } on Object catch (e) {
+      debugPrint(
+        '[processing] error after ${stopwatch.elapsedMilliseconds}ms: $e',
+      );
       if (!mounted) return;
       setState(() => _error = e.toString());
     }

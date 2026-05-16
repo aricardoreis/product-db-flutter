@@ -57,7 +57,7 @@ class AuthInterceptor extends QueuedInterceptor {
       ..headers['Authorization'] = 'Bearer ${refreshed.accessToken}';
     try {
       final response =
-          await _ref.read(dioProvider).fetch<dynamic>(retryOptions);
+          await _ref.read(bareDioProvider).fetch<dynamic>(retryOptions);
       handler.resolve(response);
     } on DioException catch (e) {
       handler.next(e);
