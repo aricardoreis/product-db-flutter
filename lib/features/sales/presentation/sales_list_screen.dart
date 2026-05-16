@@ -44,11 +44,12 @@ class _SalesListScreenState extends ConsumerState<SalesListScreen> {
     final state = ref.watch(salesListControllerProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Sales')),
-      body: RefreshIndicator(
-        onRefresh: () =>
-            ref.read(salesListControllerProvider.notifier).refresh(),
-        child: _buildBody(state),
+      body: SafeArea(
+        child: RefreshIndicator(
+          onRefresh: () =>
+              ref.read(salesListControllerProvider.notifier).refresh(),
+          child: _buildBody(state),
+        ),
       ),
     );
   }

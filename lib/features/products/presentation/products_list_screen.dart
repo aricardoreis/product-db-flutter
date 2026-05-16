@@ -48,11 +48,12 @@ class _ProductsListScreenState extends ConsumerState<ProductsListScreen> {
     final state = ref.watch(productsListControllerProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Products')),
-      body: RefreshIndicator(
-        onRefresh: () =>
-            ref.read(productsListControllerProvider.notifier).refresh(),
-        child: _buildBody(state),
+      body: SafeArea(
+        child: RefreshIndicator(
+          onRefresh: () =>
+              ref.read(productsListControllerProvider.notifier).refresh(),
+          child: _buildBody(state),
+        ),
       ),
     );
   }
