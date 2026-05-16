@@ -4,7 +4,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:product_db_flutter/features/products/presentation/products_list_controller.dart';
 import 'package:product_db_flutter/features/sales/data/sales_api.dart';
+import 'package:product_db_flutter/features/sales/presentation/sales_list_controller.dart';
 
 class ProcessingScreen extends ConsumerStatefulWidget {
   const ProcessingScreen({required this.url, super.key});
@@ -44,6 +46,9 @@ class _ProcessingScreenState extends ConsumerState<ProcessingScreen> {
           .create(url: widget.url, cancelToken: token);
       debugPrint('[processing] success in ${stopwatch.elapsedMilliseconds}ms');
       if (!mounted) return;
+      ref
+        ..invalidate(salesListControllerProvider)
+        ..invalidate(productsListControllerProvider);
       setState(() => _done = true);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Invoice processed!')),
